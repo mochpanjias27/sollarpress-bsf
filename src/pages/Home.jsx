@@ -2,6 +2,7 @@ import { lazy, Suspense, useEffect, useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { PROCESS, SITE } from '../site.js';
 import { GALLERY } from '../products.js';
+import ImpactStrip from '../components/ImpactCounter.jsx';
 import { LIVE } from '../three/materials.js';
 import useReveal from '../components/useReveal.js';
 import { loadForecast } from '../engine/forecast.js';
@@ -128,7 +129,9 @@ export default function Home() {
 
       {/* ===== STATS ===== */}
       <section className="container" style={{ position: 'relative', zIndex: 4 }}>
-        <div className="stats reveal" style={{ marginTop: 28 }}>
+        <div className="reveal" style={{ marginTop: 28 }}><ImpactStrip /></div>
+        <div style={{ textAlign: 'right', marginTop: 10 }}><Link to="/dampak" className="btn sm arrow">Lihat dampak lengkap</Link></div>
+        <div className="stats reveal" style={{ marginTop: 18 }}>
           <div className="stat"><div className="v">Rp1,5<small>M</small></div><div className="l">investasi PLTS di lokasi</div></div>
           <div className="stat"><div className="v">30<small>kW</small></div><div className="l">heater oli mesin press</div></div>
           <div className="stat"><div className="v">185–200<small>°C</small></div><div className="l">jendela suhu kualitas papan</div></div>

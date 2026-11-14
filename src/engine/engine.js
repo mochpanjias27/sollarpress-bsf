@@ -482,4 +482,29 @@ function allocate(p, S, total, maxPerDay, onProgress) {
 }
 function optimizeCore(p, S, onProgress) { return optimize(p, S, onProgress); }
 
-export { allocate, sliceDays, defaultParams, syntheticForecast, parseOpenMeteo, toSlots, optimize, baseline, derived, slotInfo, SPD, DT_H };
+
+// ---------- Replay: jalankan ulang aksi (u, press) pada "mesin nyata" dengan parameter berbeda ----------
+// Dipakai untuk membangkitkan data telemetri sintetis yang realistis (digital twin demo).
+function replay(p, S, actions, pvActual, track = null, s0 = 0) {
+  // track: suhu rencana per slot → pengendali umpan balik (termostat) mengoreksi daya heater
+  const D = derived(p);
+  const pr = Object.assign({}, p, { thMin: -1e9, thMaxPress: 1e9, thMaxAbs: 1e9 });
+  let th = p.theta0, soc = p.soc0;
+  const out = [];
+  for (let s = 0; s < actions.length; s++) {
+    const info = slotInfo(p, s + s0, S.startDateStr);
+    const a = actions[s];
+    let u = a.u;
+    if (track && (a.u > 0 || a.press >= 0)) {
+      // target = suhu rencana di awal slot; koreksi proporsional lembut di atas umpan maju (u rencana)
+      const err = track[s] - th;
+      u = Math.min(1, Math.max(0, a.u + 0.04 * err));
+    }
+    const r = step(pr, D, info, pvActual[s], S.temp[s + s0], th, soc, u, a.press);
+    out.push({ s: s + s0, th, th2: r.th2, soc, pv: pvActual[s], grid: r.grid, load: r.load, Ph: r.Ph, dis: r.dis, curt: r.curt, press: a.press, tamb: S.temp[s + s0] });
+    th = r.th2; soc = r.soc2;
+  }
+  return out;
+}
+
+export { replay, allocate, sliceDays, defaultParams, syntheticForecast, parseOpenMeteo, toSlots, optimize, baseline, derived, slotInfo, SPD, DT_H };

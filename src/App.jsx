@@ -8,6 +8,9 @@ const Scheduler = lazy(() => import('./pages/Scheduler.jsx'));
 const Methodology = lazy(() => import('./pages/Methodology.jsx'));
 const About = lazy(() => import('./pages/About.jsx'));
 const Products = lazy(() => import('./pages/Products.jsx'));
+const Monitoring = lazy(() => import('./pages/Monitoring.jsx'));
+const Economics = lazy(() => import('./pages/Economics.jsx'));
+const Impact = lazy(() => import('./pages/Impact.jsx'));
 const NotFound = lazy(() => import('./pages/NotFound.jsx'));
 
 function ScrollTop() {
@@ -31,6 +34,9 @@ export default function App() {
           <Route path="/scheduler" element={<Scheduler />} />
           <Route path="/metodologi" element={<Methodology />} />
           <Route path="/pemanfaatan" element={<Products />} />
+          <Route path="/monitoring" element={<Monitoring />} />
+          <Route path="/tekno-ekonomi" element={<Economics />} />
+          <Route path="/dampak" element={<Impact />} />
           <Route path="/tentang" element={<About />} />
           <Route path="*" element={<NotFound />} />
         </Routes>

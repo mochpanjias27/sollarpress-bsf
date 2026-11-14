@@ -8,9 +8,13 @@ Fitur utama:
 - **Beranda** — hero diorama 3D isometrik (matahari → panel surya → baterai → mesin hot press; sampah plastik → hopper → konveyor → pencacah → press → papan), HUD simulasi live, alur proses, *exploded view* 3D komponen (hot press, panel surya, baterai & kontrol), dan teaser prakiraan energi surya 7 hari.
 - **Scheduler** — aplikasi optimisasi: prakiraan iradiasi → daya PV, model termal pelat + oli, dynamic programming per 15 menit, mode target harian / mingguan fleksibel, perbandingan dengan jadwal konvensional, instruksi operator (salin/unduh CSV).
 - **Pemanfaatan** — galeri foto produk dari kedua artikel (lemari, pintu, tempat sampah terpilah, meja–kursi, panel atap, gerobak, partisi, atap), animasi 3D papan 120 × 240 cm dipotong lalu dirakit menjadi produk, formulasi bahan, daftar aplikasi, dan pendekatan desain.
+- **Monitoring & digital twin** — telemetri (simulasi live / unggah CSV / perangkat IoT via API), twin 3D yang mengikuti data, suhu terukur vs prediksi model, residual ±3σ, log anomali, RMSE & MAPE.
+- **Tekno-ekonomi & risiko** — arus kas 20 tahun, NPV, IRR, payback, BCR, LCOE PLTS, NPV inkremental PLTS, Monte Carlo dengan VaR/CVaR 5%, tornado sensitivitas, emisi dihindari.
+- **Dampak** — penghitung kumulatif real-time (sampah terolah, papan, kWh surya, CO₂e), kesetaraan, grafik bulanan, peta SDGs.
 - **Metodologi** — formulasi matematika lengkap (KaTeX).
 - **Tentang** — latar belakang, lokasi, publikasi, tim.
 - **API** `/api/forecast` — Vercel Serverless Function yang mem-proxy & meng-cache prakiraan Open-Meteo (30 menit).
+- **API** `/api/telemetry` — penerima data sensor mesin (POST, dengan API key) dan penyedia data untuk halaman Monitoring (GET).
 
 ## Teknologi
 
@@ -29,7 +33,8 @@ Fitur utama:
 ```
 solarpress-web/
 ├── api/
-│   └── forecast.js          # proxy + cache Open-Meteo (Vercel Function)
+│   ├── forecast.js          # proxy + cache Open-Meteo (Vercel Function)
+│   └── telemetry.js         # penerima/penyedia telemetri (Upstash Redis opsional)
 ├── public/
 │   ├── favicon.svg
 │   └── images/produk/       # foto produk dari figur artikel
@@ -46,10 +51,13 @@ solarpress-web/
 │   │   ├── BoardAssembler.jsx # animasi papan → produk
 │   │   └── materials.js     # palet, tekstur prosedural, state animasi
 │   ├── components/          # Nav, Footer, ChartCanvas, Tex, useReveal
-│   ├── pages/               # Home, Scheduler, Products, Methodology, About, NotFound
+│   ├── pages/               # Home, Scheduler, Monitoring, Economics, Impact, Products, Methodology, About
 │   ├── styles/              # global.css, scheduler.css
 │   ├── site.js              # konfigurasi situs: lokasi, publikasi, alur proses
 │   ├── products.js          # data halaman Pemanfaatan (galeri, formulasi, aplikasi)
+│   ├── impact.js            # konfigurasi & rumus penghitung dampak
+│   ├── econ/model.js        # model tekno-ekonomi, Monte Carlo, VaR, tornado
+│   ├── telemetry/           # model digital twin & parser CSV
 │   ├── App.jsx
 │   └── main.jsx
 ├── .github/workflows/ci.yml # CI: uji engine + build
@@ -95,6 +103,13 @@ git push -u origin main
 4. Setiap `git push` ke `main` akan men-deploy ulang secara otomatis.
 
 Tidak ada environment variable yang wajib — Open-Meteo gratis tanpa API key untuk penggunaan non-komersial.
+
+### Mengaktifkan telemetri perangkat (opsional)
+
+1. Di dashboard Vercel → **Storage / Marketplace** → tambahkan **Upstash for Redis** ke proyek.
+2. Pastikan environment variable `UPSTASH_REDIS_REST_URL` dan `UPSTASH_REDIS_REST_TOKEN` tersedia, lalu buat `TELEMETRY_KEY` (string rahasia bebas).
+3. Panel kontrol / ESP32 / gateway mengirim JSON tiap 15 menit dengan metode POST ke `/api/telemetry` dan header `x-api-key` berisi `TELEMETRY_KEY`. Contoh isi: `{"waktu":"2026-11-16T10:15","suhu_pelat":192.4,"daya_heater":22.5,"daya_pv":41.2,"daya_pln":0,"soc":0.82,"menekan":1}`.
+4. Buka halaman **Monitoring → Perangkat IoT (API)**. Tanpa konfigurasi ini, halaman tetap berjalan dengan mode simulasi dan unggah CSV (template: `public/data/template-telemetri.csv`).
 
 ## Menyesuaikan parameter
 

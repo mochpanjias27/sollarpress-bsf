@@ -21,6 +21,9 @@ export default function Footer() {
             <h5>Navigasi</h5>
             <ul>
               <li><Link to="/scheduler">Scheduler</Link></li>
+              <li><Link to="/monitoring">Monitoring & digital twin</Link></li>
+              <li><Link to="/tekno-ekonomi">Tekno-ekonomi & risiko</Link></li>
+              <li><Link to="/dampak">Dampak</Link></li>
               <li><Link to="/pemanfaatan">Pemanfaatan papan</Link></li>
               <li><Link to="/metodologi">Metodologi & model</Link></li>
               <li><Link to="/tentang">Tentang proyek</Link></li>

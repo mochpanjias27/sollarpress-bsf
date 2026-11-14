@@ -1,5 +1,11 @@
 import { useEffect, useState } from 'react';
 import { NavLink, Link, useLocation } from 'react-router-dom';
+
+const PLATFORM = [
+  ['/scheduler', '🗓️', 'Scheduler', 'Optimisasi jadwal siklus press'],
+  ['/monitoring', '📡', 'Monitoring & digital twin', 'Data sensor vs model, deteksi anomali'],
+  ['/tekno-ekonomi', '📈', 'Tekno-ekonomi & risiko', 'NPV, IRR, Monte Carlo, VaR'],
+];
 import { SITE } from '../site.js';
 
 export function BrandMark({ size = 20 }) {
@@ -15,6 +21,7 @@ export function BrandMark({ size = 20 }) {
 export default function Nav() {
   const [solid, setSolid] = useState(false);
   const [open, setOpen] = useState(false);
+  const [dd, setDd] = useState(false);
   const { pathname } = useLocation();
   useEffect(() => {
     const on = () => setSolid(window.scrollY > 20 || pathname !== '/');
@@ -22,7 +29,7 @@ export default function Nav() {
     window.addEventListener('scroll', on, { passive: true });
     return () => window.removeEventListener('scroll', on);
   }, [pathname]);
-  useEffect(() => setOpen(false), [pathname]);
+  useEffect(() => { setOpen(false); setDd(false); }, [pathname]);
 
   return (
     <header className={'nav' + (solid ? ' solid' : '')}>
@@ -33,8 +40,16 @@ export default function Nav() {
         </Link>
         <nav className={'nav-links' + (open ? ' open' : '')}>
           <NavLink to="/" end>Beranda</NavLink>
-          <NavLink to="/scheduler">Scheduler</NavLink>
+          <div className={'nav-dd' + (dd ? ' open' : '')} onMouseLeave={() => setDd(false)}>
+            <button className={PLATFORM.some(([to]) => pathname.startsWith(to)) ? 'active' : ''} onClick={() => setDd((o) => !o)} aria-expanded={dd}>Platform ▾</button>
+            <div className="nav-menu">
+              {PLATFORM.map(([to, ic, t, d]) => (
+                <NavLink key={to} to={to} onClick={() => setDd(false)}><span>{ic}</span><div><b>{t}</b><small>{d}</small></div></NavLink>
+              ))}
+            </div>
+          </div>
           <NavLink to="/pemanfaatan">Pemanfaatan</NavLink>
+          <NavLink to="/dampak">Dampak</NavLink>
           <NavLink to="/metodologi">Metodologi</NavLink>
           <NavLink to="/tentang">Tentang</NavLink>
         </nav>
