@@ -1,6 +1,7 @@
 import { lazy, Suspense, useEffect, useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { PROCESS, SITE } from '../site.js';
+import { GALLERY } from '../products.js';
 import { LIVE } from '../three/materials.js';
 import useReveal from '../components/useReveal.js';
 import { loadForecast } from '../engine/forecast.js';
@@ -178,6 +179,22 @@ export default function Home() {
               <div className="hint">⟲ seret untuk memutar</div>
             </div>
           </div>
+        </div>
+      </section>
+
+      {/* ===== PEMANFAATAN ===== */}
+      <section className="section" style={{ paddingTop: 20 }} id="pemanfaatan">
+        <div className="container center">
+          <span className="eyebrow reveal">Pemanfaatan</span>
+          <h2 className="h2 reveal">Papan yang <span className="grad">benar-benar dipakai</span></h2>
+          <p className="lead reveal">Lemari, pintu, tempat sampah terpilah, meja–kursi, panel atap, hingga gerobak — semuanya dari sampah plastik low-value.</p>
+          <div className="ptease reveal">
+            {['lemari', 'pintu', 'tempat-sampah', 'meja-kursi', 'panel-atap', 'gerobak'].map((id) => {
+              const g = GALLERY.find((x) => x.id === id);
+              return <Link key={id} to="/pemanfaatan#galeri"><img src={g.img} alt={g.title} loading="lazy" /><span>{g.title}</span></Link>;
+            })}
+          </div>
+          <div className="hero-actions reveal" style={{ justifyContent: 'center' }}><Link to="/pemanfaatan" className="btn primary arrow">Lihat semua pemanfaatan</Link></div>
         </div>
       </section>
 

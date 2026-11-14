@@ -34,6 +34,7 @@ export default function Nav() {
         <nav className={'nav-links' + (open ? ' open' : '')}>
           <NavLink to="/" end>Beranda</NavLink>
           <NavLink to="/scheduler">Scheduler</NavLink>
+          <NavLink to="/pemanfaatan">Pemanfaatan</NavLink>
           <NavLink to="/metodologi">Metodologi</NavLink>
           <NavLink to="/tentang">Tentang</NavLink>
         </nav>

@@ -7,6 +7,7 @@ Fitur utama:
 
 - **Beranda** — hero diorama 3D isometrik (matahari → panel surya → baterai → mesin hot press; sampah plastik → hopper → konveyor → pencacah → press → papan), HUD simulasi live, alur proses, *exploded view* 3D komponen (hot press, panel surya, baterai & kontrol), dan teaser prakiraan energi surya 7 hari.
 - **Scheduler** — aplikasi optimisasi: prakiraan iradiasi → daya PV, model termal pelat + oli, dynamic programming per 15 menit, mode target harian / mingguan fleksibel, perbandingan dengan jadwal konvensional, instruksi operator (salin/unduh CSV).
+- **Pemanfaatan** — galeri foto produk dari kedua artikel (lemari, pintu, tempat sampah terpilah, meja–kursi, panel atap, gerobak, partisi, atap), animasi 3D papan 120 × 240 cm dipotong lalu dirakit menjadi produk, formulasi bahan, daftar aplikasi, dan pendekatan desain.
 - **Metodologi** — formulasi matematika lengkap (KaTeX).
 - **Tentang** — latar belakang, lokasi, publikasi, tim.
 - **API** `/api/forecast` — Vercel Serverless Function yang mem-proxy & meng-cache prakiraan Open-Meteo (30 menit).
@@ -30,7 +31,8 @@ solarpress-web/
 ├── api/
 │   └── forecast.js          # proxy + cache Open-Meteo (Vercel Function)
 ├── public/
-│   └── favicon.svg
+│   ├── favicon.svg
+│   └── images/produk/       # foto produk dari figur artikel
 ├── scripts/
 │   └── test-engine.mjs      # uji cepat mesin optimisasi (Node)
 ├── src/
@@ -41,11 +43,13 @@ solarpress-web/
 │   ├── three/
 │   │   ├── HeroScene.jsx    # diorama 3D hero
 │   │   ├── TechExplorer.jsx # exploded view komponen
+│   │   ├── BoardAssembler.jsx # animasi papan → produk
 │   │   └── materials.js     # palet, tekstur prosedural, state animasi
 │   ├── components/          # Nav, Footer, ChartCanvas, Tex, useReveal
-│   ├── pages/               # Home, Scheduler, Methodology, About, NotFound
+│   ├── pages/               # Home, Scheduler, Products, Methodology, About, NotFound
 │   ├── styles/              # global.css, scheduler.css
 │   ├── site.js              # konfigurasi situs: lokasi, publikasi, alur proses
+│   ├── products.js          # data halaman Pemanfaatan (galeri, formulasi, aplikasi)
 │   ├── App.jsx
 │   └── main.jsx
 ├── .github/workflows/ci.yml # CI: uji engine + build

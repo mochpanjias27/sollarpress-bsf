@@ -7,6 +7,7 @@ const Home = lazy(() => import('./pages/Home.jsx'));
 const Scheduler = lazy(() => import('./pages/Scheduler.jsx'));
 const Methodology = lazy(() => import('./pages/Methodology.jsx'));
 const About = lazy(() => import('./pages/About.jsx'));
+const Products = lazy(() => import('./pages/Products.jsx'));
 const NotFound = lazy(() => import('./pages/NotFound.jsx'));
 
 function ScrollTop() {
@@ -29,6 +30,7 @@ export default function App() {
           <Route path="/" element={<Home />} />
           <Route path="/scheduler" element={<Scheduler />} />
           <Route path="/metodologi" element={<Methodology />} />
+          <Route path="/pemanfaatan" element={<Products />} />
           <Route path="/tentang" element={<About />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
