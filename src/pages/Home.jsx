@@ -106,7 +106,7 @@ export default function Home() {
         <div className="hero-in">
           <div className="hero-copy">
             <span className="eyebrow">(2026) Ekonomi sirkular · Waduk Saguling</span>
-            <h1>Sampah plastik jadi papan, <span className="grad">digerakkan matahari.</span></h1>
+            <h1>Mengubah plastik low-value menjadi <span className="grad">bernilai jual</span>, dengan tenaga matahari.</h1>
             <p className="lead">
               SolarPress memprakirakan sinar matahari di lokasi mesin, lalu menyusun jadwal siklus hot press
               agar pemanasan dan pengepresan berjalan saat panel surya paling produktif — listrik PLN seminimal mungkin.
